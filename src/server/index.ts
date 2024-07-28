@@ -8,7 +8,7 @@ fastify.register(fastifyStatic, {
   root: resolve(process.cwd(), "./dist/client"),
 });
 
-fastify.listen({ port: 8000 }, (err, address) => {
+fastify.listen({ port: 8000, host: "0.0.0.0" }, (err, address) => {
   if (err) throw err;
 
   console.log(`Server listening at ${address}`);
