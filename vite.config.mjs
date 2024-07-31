@@ -7,6 +7,11 @@ const config = defineConfig({
     outDir: '../../dist/client',
   },
   plugins: [react()],
+  server: {
+    proxy: {
+      "/api": "http://localhost:8000",
+    },
+  }
 });
 
 export default config;
