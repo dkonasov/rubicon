@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getInitialFolderThunk } from "./thunks";
 
 export interface FilesystemState {
   currentPath: string;
@@ -15,6 +16,11 @@ const filesystemSlice = createSlice({
     appendCurrentPath: (state, action: PayloadAction<string>) => {
       state.currentPath = `${state.currentPath}${action.payload}/`;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getInitialFolderThunk.fulfilled, (state, action) => {
+      state.currentPath = action.payload;
+    });
   },
 });
 

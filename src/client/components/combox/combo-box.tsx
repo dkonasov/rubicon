@@ -10,7 +10,6 @@ import {
 } from "react";
 import { ComboBoxElemProps } from "./combo-box-elem";
 import { ComboboxContextValue, ComboboxProvider } from "./combobox-context";
-import { on } from "events";
 
 export interface ComboBoxProps {
   value?: string;
@@ -20,6 +19,7 @@ export interface ComboBoxProps {
     | ReactElement<ComboBoxElemProps>[]
     | ReactElement<ComboBoxElemProps>;
   onItemSelect?: ComboboxContextValue["onItemSelect"];
+  tabIndex?: number;
 }
 
 export const ComboBox = (props: ComboBoxProps) => {
@@ -27,7 +27,7 @@ export const ComboBox = (props: ComboBoxProps) => {
   const { floatingStyles, refs } = useFloating();
   const currentFocusedOptionRef = useRef<HTMLElement | null>(null);
 
-  const { value = "", isLoading, onItemSelect, children } = props;
+  const { value = "", isLoading, onItemSelect, children, tabIndex = 0 } = props;
   const comboBoxContextValue = useMemo<ComboboxContextValue>(
     () => ({ onItemSelect }),
     [onItemSelect]
@@ -74,6 +74,30 @@ export const ComboBox = (props: ComboBoxProps) => {
         currentFocusedOptionRef.current.focus();
       } else if (event.key === "Enter") {
         onItemSelect?.(currentFocusedOptionRef.current.textContent || "");
+      }
+    }
+
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setIsOpen(false);
+      const tabbableElements = Array.from(
+        document.querySelectorAll<HTMLElement>("input, button")
+      );
+      let elementWithGreaterIndex = tabbableElements.find(
+        (elem) => elem.tabIndex > tabIndex
+      );
+
+      if (!elementWithGreaterIndex) {
+        const currentElementIndex = tabbableElements.indexOf(
+          refs.reference.current as HTMLElement
+        );
+        elementWithGreaterIndex = tabbableElements
+          .slice(currentElementIndex + 1)
+          .find((elem) => (elem.tabIndex ?? 0) === tabIndex);
+      }
+
+      if (elementWithGreaterIndex) {
+        elementWithGreaterIndex.focus();
       }
     }
   }, []);

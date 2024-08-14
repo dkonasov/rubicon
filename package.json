@@ -9,6 +9,7 @@
     "build:client": "vite build",
     "build:server": "swc src/server -d dist/server",
     "start": "node dist/server/src/server/index.js",
+    "dev:server": "node dist/server/src/server/dev.js",
     "dev": "vite dev"
   },
   "keywords": [],
@@ -17,9 +18,14 @@
   "dependencies": {
     "@fastify/static": "^7.0.4",
     "@floating-ui/react": "^0.26.20",
+    "@monaco-editor/react": "^4.6.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@vitejs/plugin-react": "^4.3.1",
+    "chokidar": "^3.6.0",
+    "classnames": "^2.5.1",
+    "cx": "^24.8.0",
     "fastify": "^4.28.1",
+    "mime-types": "^2.1.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2"
